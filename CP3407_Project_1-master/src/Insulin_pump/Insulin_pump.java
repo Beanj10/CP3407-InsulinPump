@@ -14,6 +14,8 @@ public class Insulin_pump {
 
 
     public static void main(String[] args) {
+
+        int blood_sugar_level;
         int dosage;
         dosage = 1;
         String time;
@@ -23,10 +25,14 @@ public class Insulin_pump {
         JButton automatic_button=new JButton("AUTO");
         JButton manual_button=new JButton("MANUAL");
 
+        // Get user data
+        User user = new User();
+
+
         message = "Helloworld";
         ZoneId zone = ZoneId.systemDefault();
         Clock clock = Clock.tickSeconds(zone);
-
+        time = clock.instant().toString();
         JFrame jFrame=new JFrame("Insulin Pump");
 
         // Display 1
@@ -37,22 +43,23 @@ public class Insulin_pump {
         // Display 2
         final JTextField Display2 =new JTextField();
         Display2.setBounds(25,75, 335,100);
-        Display2.setText("HelloWorld");
+        Display2.setText("Blood sugar levels: " + user.blood_sugar);
 
 
         // Display 3
         final JTextField Display3 =new JTextField();
         Display3.setBounds(25,175, 335,50);
-        Display3.setText(clock.instant().toString());
+        Display3.setText("Last dosage: ");
 
         // Manual Dose Button
         JButton dose_button=new JButton("DOSE");
         dose_button.setBounds(50,300,95,30);
         dose_button.setBackground(Color.green);
+        String finalTime = time;
         dose_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Display1.setText("Last dosage: " + dosage + "units delivered at " + time);
+                Display3.setText("Last dosage: " + dosage + "units delivered at " + finalTime);
             }
         });
 
@@ -65,17 +72,17 @@ public class Insulin_pump {
                 off_button.setBackground(Color.red);
                 manual_button.setBackground(Color.white);
                 automatic_button.setBackground(Color.white);
-                Display1.setText("Power Off");
+                Display2.setText("Power Off");
             }
         });
 
         // Manual Button
         manual_button.setBounds(250,300,95,30);
-        set__button_colour(off_button, automatic_button, manual_button, Display1);
+        set__button_colour(off_button, automatic_button, manual_button, Display2,"Manual Mode. Blood sugar levels: " + user.blood_sugar);
 
         // Automatic Button
         automatic_button.setBounds(250,350,95,30);
-        set__button_colour(manual_button, off_button, automatic_button, Display1);
+        set__button_colour(manual_button, off_button, automatic_button, Display2, "Automatic Mode. Blood sugar levels: " + user.blood_sugar);
 
         // Frame
         jFrame.add(Display1);
@@ -91,7 +98,7 @@ public class Insulin_pump {
         jFrame.setVisible(true);
     }
 
-    private static void set__button_colour(JButton off_button, JButton automatic_button, JButton manual_button, JTextField display1) {
+    private static void set__button_colour(JButton off_button, JButton automatic_button, JButton manual_button, JTextField display2, String message) {
         manual_button.setBackground(Color.white);
         manual_button.addActionListener(new ActionListener() {
             @Override
@@ -99,7 +106,7 @@ public class Insulin_pump {
                 manual_button.setBackground(Color.red);
                 off_button.setBackground(Color.white);
                 automatic_button.setBackground(Color.white);
-                display1.setText("Power Off");
+                display2.setText(message);
             }
         });
     }
